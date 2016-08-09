@@ -15,11 +15,11 @@ What is the total of all the name scores in the file?
 */
 
 #include <iostream>
-#include <algorithm>
 #include <string>
-#include <vector>
 #include <fstream>
 #include <regex>
+#include <vector>
+#include <algorithm>
 
 using namespace std;
 
@@ -33,29 +33,40 @@ int main(int argc, char *argv[]) {
 		}
 		myfile.close();
 	}
-    else cout << "Unable to open file";
+	else cout << "Unable to open file";
 
-    cout << lines;
+//    cout << lines;
 
-    regex e = "[A-Z]+";
+	regex expr("[A-Z]+");
+	smatch matcher;
+	vector<string> names;
 
-//	vector<string> names;
-//
-//	sort(names.begin(), names.end());
-//
-//	unsigned long long sum = 0;
-//	short tmp;
-//	for(short i = 0; i < names.length(); i++) {
-//		for(short j = 0; j < names[i].length(); j++) {
-//			tmp = 0;
-//			tmp += (names[i][j] - '@');
-//		}
-//		sum += (tmp * i);
+	while(regex_search(lines,matcher,expr)) {
+		names.push_back(matcher.str());
+		lines = matcher.suffix().str();
+	}
+
+	sort(names.begin(), names.end());
+
+//	for(string x:names){
+//        cout << x << endl;
 //	}
-//
-//	cout << "The sum of the name scores is: " << sum << endl;
 
-	cin.get();
+	unsigned long long sum = 0;
+	short tmp;
+	for(int i = 0; i < names.size(); i++) {
+		tmp = 0;
+		for(int j = 0; j < names[i].length(); j++) {
+			cout << (int)names[i].at(j)-'@' << " ";
+			tmp += (names[i].at(j) - '@');
+		}
+		sum += (tmp * (i+1));
+		cout << names[i] << "  " << tmp << "  " << tmp*i << "  "<< sum << endl;
+	}
+
+	cout << "The sum of the name scores is: " << sum << endl;
+
+//	cin.get();
 
 	return 0;
 }

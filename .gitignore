@@ -1,3 +1,4 @@
 ﻿# Compile stuff
+*.dll
 *.exe
 *.o
